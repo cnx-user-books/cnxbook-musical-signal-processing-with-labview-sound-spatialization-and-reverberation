@@ -1,0 +1,273 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML">
+  <title>Schroeder Reverberator</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m15491</md:content-id>
+  <md:title>Schroeder Reverberator</md:title>
+  <md:abstract>The Schroeder reverberator uses parallel comb filters followed by cascaded all-pass filters to produce an impulse response that closely resembles a physical reverberant environment. Learn how to implement the Schroeder reverberator block diagram as a digital filter in LabVIEW, and apply the filter to an audio .wav file.</md:abstract>
+  <md:uuid>1f7871f9-09bc-466f-a458-8777e3a5f2d2</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="http://cnx.org/content/m15490/latest/" strength="3">Karplus-Strong Plucked String Algorithm with Improved Pitch Accuracy</link>
+    </link-group>
+    <link-group type="prerequisite">
+      <link url="http://cnx.org/content/m15471/latest/" strength="3">Reverberation</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+
+<table id="labview_banner" frame="none" summary=""><tgroup cols="2">
+<colspec rowsep="0" colsep="0"/> <colspec colwidth="6in" rowsep="0" colsep="0"/>
+<tbody>
+  <row>
+    <entry morerows="3"><media id="idm5983712" alt=""><image src="../../media/LabVIEWq.png" mime-type="image/png"/></media></entry>
+    <entry> This module refers to LabVIEW, a software development environment that features a graphical programming language.
+       Please see the <link document="m15428">LabVIEW QuickStart Guide</link> module for tutorials and documentation that will help you:</entry>
+  </row>
+  <row> <entry>• Apply LabVIEW to Audio Signal Processing </entry> </row>
+  <row> <entry>• Get started with LabVIEW</entry> </row>
+  <row> <entry>• Obtain a fully-functional evaluation edition of LabVIEW</entry> </row>
+</tbody>
+</tgroup>
+</table>
+
+
+<section id="sec1">
+<title>Introduction</title>
+
+<para id="par2">
+		<term>Reverberation</term> is a property of concert halls that greatly adds to the enjoyment of a musical performance.
+		The on-stage performer generates sound waves that propagate directly to the listener's ear. However, sound waves
+		also bounce off the floor, walls, ceiling, and back wall of the stage, creating myriad copies of the direct sound that are
+		time-delayed and reduced in intensity.</para>
+
+<para id="par3">		In the prerequisite module <link document="m15471">Reverberation</link>, you learned how the <term>comb filter</term> 
+		structure can efficiently create replicas of a direct-path signal that are time delayed and reduced in intensity. However,
+		the comb filter produces replicas that are time delayed by exactly the same amount, leading to the sensation of 
+		a pitched tone superimposed on the signal. Refer back to <link document="m15471">Reverberation</link> to hear
+		an audio demonstration of this effect. Put another way, the impulse response of the comb filter contains impulses with
+		identical spacing in time, which is not realistic.</para>
+
+<para id="par4">		The <term>Schroeder reverberator</term> (see "References" section) uses a combination of comb filters and <term>all-pass filters</term> 
+		to produce an impulse response that more nearly resembles the random nature of a physical reverberant environment.</para>
+
+<para id="par5">		This module introduces you to the Schroeder reverberator and guides you through the implementation process in LabVIEW.
+		As a preview of what can be achieved, watch the <link target-id="video-demo"/> screencast video to see and hear
+		a short demonstration of a LabVIEW VI that implements the Schroeder reverberator.
+		The speech clip used in the video is available
+		here: <link resource="speech.wav">speech.wav</link> (audio courtesy of the Open Speech Repository,
+		<link url="http://www.voiptroubleshooter.com/open_speech">www.voiptroubleshooter.com/open_speech</link>; 
+		the sentences are two of the many phonetically balanced <term>Harvard Sentences</term>, an important standard
+	       for the speech processing community).
+</para>
+
+<figure id="video-demo"><title><link url="https://youtu.be/ZgxjjBsB7_M" window="new">https://youtu.be/ZgxjjBsB7_M</link> (0:00)</title><media id="eip-idm1095113824" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/ZgxjjBsB7_M?rel=0" autoplay="false" width="640" height="460"/>
+ </media><caption>[video] Demonstration of the <term>Schroeder reverberator</term> as implemented in LabVIEW
+</caption></figure></section>
+
+<section id="sec7">
+<title>Structure of the Schroeder Reverberator</title>
+
+<para id="par8">
+		The <link target-id="video-theory"/> screencast video presents the structure of the Schroeder
+		reverberator and describes the rationale for its design.
+</para>
+
+<figure id="video-theory"><title><link url="https://youtu.be/k1SorBkeqlo" window="new">https://youtu.be/k1SorBkeqlo</link> (0:00)</title><media id="fs-idm212167392" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/k1SorBkeqlo?rel=0" autoplay="false" width="640" height="460"/>
+ </media>
+
+<caption>[video] Structure of the <term>Schroeder reverberator</term> and rationale for its design
+</caption></figure></section>
+
+<section id="sec10">
+<title>All-Pass Filter</title>
+
+<para id="par11">
+		The Schroeder reverberator uses <term>all-pass filters</term> to increase the pulse density produced by the
+		parallel comb filters. You perhaps are familiar with the frequency response of an all-pass filter: its magnitude
+		response is unity (flat) for all frequencies, and its phase response varies with frequency. For example, the all-pass filter
+		is used to create a variable fractional delay as described in
+		<link document="m15490">Karplus-Strong Plucked String Algorithm with Improved Pitch Accuracy</link>.</para>
+
+<para id="par12">		From an intuitive standpoint it would seem that a flat magnitude response in the frequency domain should correspond
+		to an impulse response (time-domain) containing only a single delta function (recall that the impulse function and
+		a constant-valued function constitute a Fourier transform pair). However, the all-pass filter's 
+		impulse response is actually a large negative impulse followed by a series of positive decaying impulses.</para>
+
+<para id="par13">		In this section, derive the transfer function and difference equation of the all-pass filter structure
+		shown in <link target-id="img-apfstructure"/>. Note that the structure is approximately of the same
+		level of complexity as the comb filter: it contains a delay line of N samples and an extra gain
+		element and summing element.
+</para>
+
+<figure id="img-apfstructure">
+<media id="idm5029184" alt=""><image src="../../media/snd_reverb-schroeder-apfstructure.png" mime-type="image/png"/></media>
+<caption>
+   All-pass filter structure
+</caption>
+</figure>
+
+<exercise id="exer15">
+<problem id="idm3151520">
+<para id="par16">Determine the transfer function
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:mi>H</m:mi><m:mo stretchy="false">(</m:mo><m:mi>z</m:mi><m:mo stretchy="false">)</m:mo>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamisaiaacIcacaWG6bGaaiykaaaa@3861@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ --> for the all-pass filter structure of <link target-id="img-apfstructure"/>.
+	</para>
+</problem>
+<solution id="idm3851728">
+<para id="par17">
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:mi>H</m:mi><m:mo stretchy="false">(</m:mo><m:mi>z</m:mi><m:mo stretchy="false">)</m:mo><m:mo>=</m:mo><m:mfrac>
+    <m:mrow>
+     <m:mo>−</m:mo><m:mi>g</m:mi><m:mo>+</m:mo><m:msup>
+      <m:mi>z</m:mi>
+      <m:mrow>
+       <m:mo>−</m:mo><m:mi>N</m:mi>
+      </m:mrow>
+     </m:msup>
+    </m:mrow>
+    <m:mrow>
+     <m:mn>1</m:mn><m:mo>−</m:mo><m:mi>g</m:mi><m:msup>
+      <m:mi>z</m:mi>
+      <m:mrow>
+       <m:mo>−</m:mo><m:mi>N</m:mi>
+      </m:mrow>
+     </m:msup>
+    </m:mrow>
+   </m:mfrac>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamisaiaacIcacaWG6bGaaiykaiabg2da9maalaaabaGaeyOeI0Iaam4zaiabgUcaRiaadQhadaahaaWcbeqaaiabgkHiTiaad6eaaaaakeaacaaIXaGaeyOeI0Iaam4zaiaadQhadaahaaWcbeqaaiabgkHiTiaad6eaaaaaaaaa@44A8@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ -->
+	</para>
+</solution>
+</exercise>
+<exercise id="exer18">
+<problem id="idm3479536">
+<para id="par19">Based on your result for the previous exercise, write the difference equation for the all-pass filter.</para>
+</problem>
+<solution id="idm11785360">
+<para id="par20">
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:mi>y</m:mi><m:mo stretchy="false">(</m:mo><m:mi>n</m:mi><m:mo stretchy="false">)</m:mo><m:mo>=</m:mo><m:mo>−</m:mo><m:mi>g</m:mi><m:mi>x</m:mi><m:mo stretchy="false">(</m:mo><m:mi>n</m:mi><m:mo stretchy="false">)</m:mo><m:mo>+</m:mo><m:mi>x</m:mi><m:mo stretchy="false">(</m:mo><m:mi>n</m:mi><m:mo>−</m:mo><m:mi>N</m:mi><m:mo stretchy="false">)</m:mo><m:mo>+</m:mo><m:mi>g</m:mi><m:mi>y</m:mi><m:mo stretchy="false">(</m:mo><m:mi>n</m:mi><m:mo>−</m:mo><m:mi>N</m:mi><m:mo stretchy="false">)</m:mo>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamyEaiaacIcacaWGUbGaaiykaiabg2da9iabgkHiTiaadEgacaWG4bGaaiikaiaad6gacaGGPaGaey4kaSIaamiEaiaacIcacaWGUbGaeyOeI0IaamOtaiaacMcacqGHRaWkcaWGNbGaamyEaiaacIcacaWGUbGaeyOeI0IaamOtaiaacMcaaaa@4B71@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ -->
+</para>
+</solution>
+</exercise>
+</section>
+
+<section id="sec21">
+<title>All-Pass Filter Impulse Response</title>
+
+<para id="par22">
+		As described in the video of  <link target-id="video-theory"/>, two all-pass filters are placed in cascade (series) with the summed output of the
+		parallel comb filters. An understanding of the all-pass filter impulse response reveals why a cascade connection increases the pulse density of the
+		comb filter in such a way as to emulate the effect of natural reverberation.</para>
+
+<para id="par23">		The <link target-id="video-apf-impulse-response"/> screencast video derives the impulse response of the all-pass filter; the loop time and
+		reverb time of the all-pass filter are also presented.
+</para>
+
+<figure id="video-apf-impulse-response"><title><link url="https://youtu.be/Utvvsr_d02c" window="new">https://youtu.be/Utvvsr_d02c</link> (0:00)</title><media id="fs-idm216089632" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/Utvvsr_d02c?rel=0" autoplay="false" width="640" height="460"/>
+ </media>
+
+<caption>[video] Derivation of the all-pass filter impulse response
+</caption></figure><para id="par25">
+		The <link target-id="video-apfdemo"/> screencast video demonstrates the sound of the all-pass filter impulse response compared to
+		that of the comb filter. Moreover, the audible effect of increasing the comb filter pulse density with an all-pass filter is also demonstrated in the video.
+</para>
+
+<para id="par26">
+		<media id="idm4169776" alt=""><image src="../../media/LabVIEW.png" mime-type="image/png"/></media> Download the LabVIEW VI presented in the video: <link resource="apfdemo.zip">apfdemo.zip</link>
+		Refer to <link document="m15430">TripleDisplay</link> to install the front-panel indicator required by the VI.
+</para>
+
+<figure id="video-apfdemo"><title><link url="https://youtu.be/h_bDexya1zY" window="new">https://youtu.be/h_bDexya1zY</link> (0:00)</title><media id="fs-idm195135648" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/h_bDexya1zY?rel=0" autoplay="false" width="640" height="460"/>
+ </media>
+
+<caption>[video] Audio demonstration of the all-pass filter impulse response combined with comb filter
+</caption></figure></section>
+
+<section id="sec28">
+<title>Project: Implement the Schroeder Reverberator in LabVIEW</title>
+
+<para id="par29">
+		As described in the <link target-id="video-theory"/> screencast video, two all-pass filters are placed in cascade (series) with the summed output of four
+		parallel comb filters. The video of <link target-id="video-apf-impulse-response"/> explains how the all-pass filter "fattens up" each comb filter
+		output impulse with high density pulses that rapidly decay to zero. Selecting mutually-prime numbers for the loop times ensures that the comb filter
+		impulses do not overlap too soon, which further increases the effect of randomly-spaced impulses.</para>
+
+<para id="par30">		The table in <link target-id="img-timetable"/> lists the required reverb times (T60) and loop times (tau) of the Schroeder reverberator. Note
+		that the comb filters all use the same value (the desired overall reverb time).
+</para>
+
+<figure id="img-timetable">
+<media id="idp1202352" alt=""><image src="../../media/snd_reverb-schroeder-timetable.png" mime-type="image/png"/></media>
+<caption>
+   Reverb time and loop time values for the comb filters and all-pass filters of the Schroeder reverberator
+</caption>
+</figure>
+
+<para id="par32">
+		The <link target-id="video-build"/> screencast video provides everything you need to know to build your
+		own LabVIEW VI for the Schroeder reverberator. 
+</para>
+
+<para id="par33">
+		<media id="idp1298384" alt=""><image src="../../media/LabVIEW.png" mime-type="image/png"/></media> Download the .wav reader subVI mentioned in the video : <link resource="WavRead.vi">WavRead.vi</link>.
+</para>
+
+<figure id="video-build"><title><link url="https://youtu.be/nW7haGUkm8A" window="new">https://youtu.be/nW7haGUkm8A</link> (0:00)</title><media id="fs-idm506310128" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/nW7haGUkm8A?rel=0" autoplay="false" width="640" height="460"/>
+ </media>
+
+<caption>[video] Suggested LabVIEW techniques to build your own Schroeder reverberator
+</caption></figure></section>
+
+<section id="sec35">
+<title>References</title>
+
+<list id="list36" list-type="bulleted">
+
+<item> Schroeder, M.R., and B.F. Logan, "Colorless Artificial Reverberation," Journal of the Audio Engineering Society 9(3):192, 1961. </item>
+<item> Schroeder, M.R., "Natural Sounding Artificial Reverberation," Journal of the Audio Engineering Society 10(3):219-223, 1962. </item>
+<item> Moore, F.R., "Elements of Computer Music," Prentice-Hall, 1990, ISBN 0-13-252552-6. </item>
+<item> Dodge, C., and T.A. Jerse, "Computer Music: Synthesis, Composition, and Performance," 2nd ed., Schirmer Books, 1997,
+			ISBN 0-02-864682-7. </item>
+
+</list>
+
+</section>
+
+</content>
+</document>

@@ -1,0 +1,186 @@
+<!--title = Localization Cues
+-->
+
+<?xml version='1.0' standalone='yes' ?>
+<LVData>
+<Version>8.2</Version>
+
+<!-------------------------------------------------------->
+<String> <Name>sec</Name> <Val>Introduction</Val> </String>
+
+<String> <Name>para</Name> <Val>
+		Our enjoyment of synthesized or recorded sound is greatly enhanced when we perceive the actual locations of
+		the various musicians on stage. In a high quality stereo recording of a jazz trio, for example, you can tell that
+		the drummer is perhaps located slightly to the left of center, the saxophonist is on stage right and the bass player
+		is on stage left. If you have ever flipped on the "mono" (monaural) switch on your stereo amplifier, then you know
+		that the resulting sound is comparatively unpleasant, especially when wearing headphones. 
+
+		We live in a three-dimensional soundfield, and our ears continually experience slightly different versions of 
+		any given sound. These variations allow us to place (or {term}localize{/term}) the sound source, even when
+		we cannot see it.
+
+		In this module you will learn about two {term}localization cues{/term} called {term}interaural intensity difference{/term} 
+		and {term}interaural timing difference{/term}, abbreviated {term}IID{/term} and {term}ITD{/term}, respectively.
+		Each cue relies on presenting a slightly different version of a sound to each ear.
+</Val> </String>
+
+
+<String> <Name>secend</Name> <Val></Val> </String>
+<!-------------------------------------------------------->
+<String> <Name>sec</Name> <Val>Interaural Intensity Difference (IID)</Val> </String>
+
+<String> <Name>para</Name> <Val>
+		The interaural intensity difference (IID) localization cue relies on the fact that an off-center source will produce
+		a higher intensity sound in one ear compared to the other. This technique is also called {term}intensity panning{/term},
+		and is most effective when the listener is wearing headphones. When a multi-speaker arrangement is used in a room,
+		a given sound propagates to both ears. Lower frequencies have longer acoustic wavelengths and are therefore less
+		directional than higher frequency sounds. Consequently, the IID effect works better at higher frequencies above
+		1400 Hz (Dodge and Jerse, 1997).
+
+		The screencast video of {cnxn target=&quot;video-iid&quot;/} continues the discussion by deriving the equations
+		needed to implement the IID effect using a two-speaker arrangement.
+</Val> </String>
+
+<Cluster> <Name>video</Name> <NumElts>4</NumElts>
+<String> <Name>ID (optional)</Name> <Val>video-iid</Val> </String>
+<String> <Name>video name</Name> <Val>iid</Val> </String>
+<String> <Name>webpage title</Name> <Val>IID effect</Val> </String>
+<String> <Name>caption</Name> <Val>Development of the equations needed to implement the {term}interaural intensity difference{/term} (IID) localization cue</Val> </String>
+</Cluster>
+
+<String> <Name>secend</Name> <Val></Val> </String>
+<!-------------------------------------------------------->
+<String> <Name>sec</Name> <Val>Interaural Timing Difference (IID)</Val> </String>
+
+<String> <Name>para</Name> <Val>
+		The interaural timing difference (ITD) localization cue relies on the fact that soundwaves from an off-center source will 
+		arrive at one ear slightly after the other ear. We can perceive this slight difference in time down to about 20 microseconds
+		(Dodge and Jerse, 1997), and this difference helps us to place the sound source either to the left or right. The ITD
+		cue works best in the lower frequency range of 270 to 500 Hz (Dodge and Jerse, 1997).
+
+		The screencast video of {cnxn target=&quot;video-itd&quot;/} continues the discussion by deriving the equation
+		needed to implement the ITD effect using a two-speaker arrangement.
+</Val> </String>
+
+<Cluster> <Name>video</Name> <NumElts>4</NumElts>
+<String> <Name>ID (optional)</Name> <Val>video-itd</Val> </String>
+<String> <Name>video name</Name> <Val>itd</Val> </String>
+<String> <Name>webpage title</Name> <Val>ITD effect</Val> </String>
+<String> <Name>caption</Name> <Val>Development of the equation needed to implement the {term}interaural timing difference{/term} (ITD) localization cue</Val> </String>
+</Cluster>
+
+
+<String> <Name>secend</Name> <Val></Val> </String>
+<!-------------------------------------------------------->
+<String> <Name>sec</Name> <Val>Project: Implement the IID and ITD Localization Cues in LabVIEW</Val> </String>
+
+<String> <Name>para</Name> <Val>
+		You can easily experiement with both the IID and ITD localization cues in LabVIEW. The cues are probably easier to perceive when
+		you choose a speech signal for your source. 
+
+		The ITD cue requires a delay or time shift between the two stereo channels. The delay line can be constructed as a digital filter with the
+		transfer function shown in {cnxn target=&quot;eqn-delayline&quot;/}:
+</Val> </String>
+
+<Cluster> <Name>equation</Name> <NumElts>3</NumElts>
+<String> <Name>ID (optional)</Name> <Val>eqn-delay</Val> </String>
+<String> <Name>name (optional)</Name> <Val></Val> </String>
+<String> <Name>MathML text</Name> <Val>
+{!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ --}
+{m:math}
+ {m:semantics}
+  {m:mrow}
+   {m:mi}H{/m:mi}{m:mo stretchy=&apos;false&apos;}({/m:mo}{m:mi}z{/m:mi}{m:mo stretchy=&apos;false&apos;}){/m:mo}{m:mo}={/m:mo}{m:mfrac}
+    {m:mrow}
+     {m:msup}
+      {m:mi}z{/m:mi}
+      {m:mrow}
+       {m:mo}&amp;#x2212;{/m:mo}{m:mi}N{/m:mi}
+      {/m:mrow}
+     {/m:msup}
+    {/m:mrow}
+    {m:mn}1{/m:mn}
+   {/m:mfrac}
+  {/m:mrow}
+ {m:annotation encoding=&apos;MathType-MTEF&apos;}
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamisaiaacIcacaWG6bGaaiykaiabg2da9maalaaabaGaamOEamaaCaaaleqabaGaeyOeI0IaamOtaaaaaOqaaiaaigdaaaaaaa@3D28@{/m:annotation}
+ {/m:semantics}
+{/m:math}
+{!-- MathType@End@5@5@ --}
+</Val> </String>
+</Cluster>
+
+<String> <Name>para</Name> <Val>
+		Stated as a difference equation, the filter is
+{!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ --}
+{m:math}
+ {m:semantics}
+  {m:mrow}
+   {m:mi}y{/m:mi}{m:mo stretchy=&apos;false&apos;}({/m:mo}{m:mi}n{/m:mi}{m:mo stretchy=&apos;false&apos;}){/m:mo}{m:mo}={/m:mo}{m:mi}x{/m:mi}{m:mo stretchy=&apos;false&apos;}({/m:mo}{m:mi}n{/m:mi}{m:mo}&amp;#x2212;{/m:mo}{m:mi}N{/m:mi}{m:mo stretchy=&apos;false&apos;}){/m:mo}
+  {/m:mrow}
+ {m:annotation encoding=&apos;MathType-MTEF&apos;}
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamyEaiaacIcacaWGUbGaaiykaiabg2da9iaadIhacaGGOaGaamOBaiabgkHiTiaad6eacaGGPaaaaa@3E95@{/m:annotation}
+ {/m:semantics}
+ {/m:math}, which states that the output is the same as the input but delayed by N samples. The forward (or "b") coefficients are therefore zero for all but
+{!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ --}
+{m:math}
+ {m:semantics}
+  {m:mrow}
+   {m:msub}
+    {m:mi}b{/m:mi}
+    {m:mi}N{/m:mi}
+   {/m:msub}
+   {m:mo}={/m:mo}{m:mn}1{/m:mn}
+  {/m:mrow}
+ {m:annotation encoding=&apos;MathType-MTEF&apos;}
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamOyamaaBaaaleaacaWGobaabeaakiabg2da9iaaigdaaaa@38ED@{/m:annotation}
+ {/m:semantics}
+ {/m:math}, and the reverse (or "a") coefficients are zero for all but
+{!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ --}
+{m:math}
+ {m:semantics}
+  {m:mrow}
+   {m:msub}
+    {m:mi}a{/m:mi}
+    {m:mn}0{/m:mn}
+   {/m:msub}
+   {m:mo}={/m:mo}{m:mn}1{/m:mn}
+  {/m:mrow}
+ {m:annotation encoding=&apos;MathType-MTEF&apos;}
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamyyamaaBaaaleaacaaIWaaabeaakiabg2da9iaaigdaaaa@38D3@{/m:annotation}
+ {/m:semantics}
+{/m:math}.
+
+		The screencast video of {cnxn target=&quot;video-build&quot;/} provides some LabVIEW coding tips about how to implement the equations to generate a stereo audio signal.
+</Val> </String>
+
+<Cluster> <Name>video</Name> <NumElts>4</NumElts>
+<String> <Name>ID (optional)</Name> <Val>video-build</Val> </String>
+<String> <Name>video name</Name> <Val>build</Val> </String>
+<String> <Name>webpage title</Name> <Val>IID/ITD in LabVIEW</Val> </String>
+<String> <Name>caption</Name> <Val>LabVIEW coding tips for the IID and ITD localization cues</Val> </String>
+</Cluster>
+
+
+
+<String> <Name>secend</Name> <Val></Val> </String>
+<!-------------------------------------------------------->
+<String> <Name>sec</Name> <Val>References</Val> </String>
+
+<Cluster> <Name>list</Name> <NumElts>3</NumElts>
+<EW> <Name>type</Name> <Choice>Bulleted</Choice> <Choice>Enumerated</Choice> <Val>0</Val> </EW>
+<String> <Name>list name (optional)</Name> <Val></Val> </String>
+<Array> <Name>list items</Name> <Dimsize>1</Dimsize>
+	<String> <Name>String</Name> <Val>Dodge, C. and T.A. Jerse, "Computer Music: Synthesis, Composition, and Performance," 2nd ed., Schirmer Books, 1997,
+			ISBN 0-02-864682-7</Val> </String>
+</Array>
+</Cluster>
+
+
+
+
+
+<String> <Name>secend</Name> <Val></Val> </String>
+<!-------------------------------------------------------->
+
+</LVData>

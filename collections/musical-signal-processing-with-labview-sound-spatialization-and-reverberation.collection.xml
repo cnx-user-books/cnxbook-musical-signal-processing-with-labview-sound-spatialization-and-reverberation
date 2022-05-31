@@ -1,0 +1,15 @@
+<col:collection xmlns="http://cnx.rice.edu/collxml" xmlns:col="http://cnx.rice.edu/collxml" xml:lang="en">
+  <metadata xmlns:md="http://cnx.rice.edu/mdml" mdml-version="0.5">
+    <md:content-id>col10485</md:content-id>
+    <md:title>Musical Signal Processing with LabVIEW -- Sound Spatialization and Reverberation</md:title>
+    <md:language>en</md:language>
+    <md:license url="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution License</md:license>
+    <md:uuid>e0e0e5bb-db37-4217-8f0b-f2e347e46de5</md:uuid>
+<md:slug>musical-signal-processing-with-labview-sound-spatialization-and-reverberation</md:slug>
+</metadata>
+  <col:content>
+    <col:module document="m15471"/>
+    <col:module document="m15491"/>
+    <col:module document="m15475"/>
+  </col:content>
+</col:collection>

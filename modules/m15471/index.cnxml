@@ -1,0 +1,394 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML">
+  <title>Reverberation</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m15471</md:content-id>
+  <md:title>Reverberation</md:title>
+  <md:abstract>Reverberation is a property of concert halls that greatly adds to the enjoyment of a musical performance. Sound waves propagate directly from the stage to the listener, and also reflect from the floor, walls, ceiling, and back wall of the stage to create myriad copies of the direct sound that are time-delayed and reduced in intensity. In this module, learn about the concept of reverberation in more detail and ways to emulate reverberation using a digital filter structure known as a comb filter.</md:abstract>
+  <md:uuid>c7033595-0ee0-4f77-a055-36029b0712e9</md:uuid>
+</metadata>
+<featured-links>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit below.
+       Changes to the links section in the source will not be saved. -->
+    <link-group type="supplemental">
+      <link url="http://cnx.org/content/m15430/latest/" strength="3">TripleDisplay front-panel indicator</link>
+    </link-group>
+  <!-- WARNING! The 'featured-links' section is read only. Do not edit above.
+       Changes to the links section in the source will not be saved. -->
+</featured-links>
+<content>
+
+<table id="labview_banner" frame="none" summary=""><tgroup cols="2">
+<colspec rowsep="0" colsep="0"/> <colspec colwidth="6in" rowsep="0" colsep="0"/>
+<tbody>
+  <row>
+    <entry morerows="3"><media id="idm9249488" alt=""><image src="../../media/LabVIEWq.png" mime-type="image/png"/></media></entry>
+    <entry> This module refers to LabVIEW, a software development environment that features a graphical programming language.
+       Please see the <link document="m15428">LabVIEW QuickStart Guide</link> module for tutorials and documentation that will help you:</entry>
+  </row>
+  <row> <entry>• Apply LabVIEW to Audio Signal Processing </entry> </row>
+  <row> <entry>• Get started with LabVIEW</entry> </row>
+  <row> <entry>• Obtain a fully-functional evaluation edition of LabVIEW</entry> </row>
+</tbody>
+</tgroup>
+</table>
+
+
+<section id="sec1">
+<title>Introduction</title>
+
+<para id="par2">
+		<term>Reverberation</term> is a property of concert halls that greatly adds to the enjoyment of a musical performance.
+		The on-stage performer generates sound waves that propagate directly to the listener's ear. However, sound waves
+		also bounce off the floor, walls, ceiling, and back wall of the stage, creating myriad copies of the direct sound that are
+		time-delayed and reduced in intensity.</para>
+
+<para id="par3">		In this module, learn about the concept of reverberation in more detail and ways to emulate
+		reverberation using a digital filter structure known as a <term>comb filter</term>.</para>
+
+<para id="par4">		The <link target-id="video-reverb"/> screencast video continues the discussion by visualizing the sound paths
+		in a reverberant environment. The <term>impulse response</term> of the reverberant environment is also introduced.
+		Understanding the desired impulse response is the first step toward emulating reverberation with a digital filter.
+</para>
+
+<figure id="video-reverb"><title><link url="https://youtu.be/agU2B5XgCOM" window="new">https://youtu.be/agU2B5XgCOM</link> (0:48)</title><media id="eip-idm1226557904" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/agU2B5XgCOM?rel=0" autoplay="false" width="640" height="460"/>
+ </media>
+
+<caption>[video] Sound paths in a reverberant environment and impulse response model
+</caption></figure></section>
+
+<section id="sec6">
+<title>Comb Filter Theory</title>
+
+<para id="par7">
+		The <term>comb filter</term> is a relatively simple digital filter structure based on a <term>delay line</term> 
+		and <term>feedback</term>. Watch the <link target-id="video-combfilter-theory"/> screencast video  
+		to learn how you can develop the comb filter structure by considering an idealized version of the impulse
+		response of a reverberant environment.
+</para>
+
+<figure id="video-combfilter-theory"><title><link url="https://youtu.be/K19eykmRaho" window="new">https://youtu.be/K19eykmRaho</link> (1:36)</title><media id="eip-idm1251026688" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/K19eykmRaho?rel=0" autoplay="false" width="640" height="460"/>
+ </media>
+
+<caption>[video] Development of the <term>comb filter</term> structure as a way to implement an idealized reverberant
+		impulse response
+</caption></figure><para id="par9">
+		The <term>difference equation</term> of the comb filter is required in order to implement the filter in LabVIEW. In
+		general, a difference equation states the filter output y(n) as a function of the past and present input values as well
+		as past output values.</para>
+
+<para id="par10">		Take some time now to derive the comb filter difference equation as requested by the following exercise.
+</para>
+
+<exercise id="exer11">
+<problem id="idm14976">
+<para id="par12">Derive the difference equation of the comb filter structure shown at the end of the
+			<link target-id="video-combfilter-theory"/> video.</para>
+</problem>
+<solution id="idm9306800">
+<para id="par13"/>
+</solution>
+</exercise>
+</section>
+
+<section id="sec14">
+<title>Comb Filter Implementation</title>
+
+<para id="par15">
+		Once the difference equation is available, you can apply the coefficients of the equation to the LabVIEW "IIR" (infinite impulse response) digital
+		filter. The <link target-id="video-combfilter-build"/> screencast video walks through the complete process you need to convert the 
+		comb filter difference equation into a LabVIEW VI. The LabVIEW <term>MathScript node</term> creates the coefficient vectors. Once the comb
+		filter is complete, its impulse response is explored for different values of delay line length and feedback gain.</para>
+
+<para id="par16">		Please follow along with the video and create your own version of the comb filter in LabVIEW.
+		Refer to <link document="m15430">TripleDisplay</link> to install the 
+		front-panel indicator used to view the signal spectrum.
+</para>
+
+<figure id="video-combfilter-build"><title><link url="https://youtu.be/LCZ1kaP_h6s" window="new">https://youtu.be/LCZ1kaP_h6s</link> (11:16)</title><media id="eip-idm213221280" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/LCZ1kaP_h6s?rel=0" autoplay="false" width="640" height="460"/>
+ </media>
+
+<caption>[video] Implementing the comb filter in LabVIEW; exploration of the impulse response as a function of delay line length and feedback gain
+</caption></figure></section>
+
+<section id="sec18">
+<title>Loop Time and Reverb Time</title>
+
+<para id="par19">
+		As you have learned in previous sections, the comb filter behavior is determined by the delay line length N and the feedback coefficient g. From
+		a user's point of view, however, these two parameters are not very intuitive. Instead, the comb filter behavior is normally specified by
+		<term>loop time</term>
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mi>τ</m:mi>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaeqiXdqhaaa@3701@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ --> and <term>reverb time</term> denoted
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:msub>
+    <m:mi>T</m:mi>
+    <m:mrow>
+     <m:mn>60</m:mn>
+    </m:mrow>
+   </m:msub>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamivamaaBaaaleaacaaI2aGaaGimaaqabaaaaa@37BB@</m:annotation>
+ </m:semantics>
+</m:math>. Reverb time may also be written as 
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:msub>
+    <m:mi>R</m:mi>
+    <m:mrow>
+     <m:mi>T</m:mi><m:mn>60</m:mn>
+    </m:mrow>
+   </m:msub>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamOuamaaBaaaleaacaWGubGaaGOnaiaaicdaaeqaaaaa@3892@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ -->. Loop time indicates the amount of time necessary for a given sample to pass through the delay line, and is therefore the delay line length N times the
+sampling interval. The sampling interval is the reciprocal of sampling frequency, so the loop time may be expressed as in <link target-id="eqn-looptime"/>:
+</para>
+
+<equation id="eqn-looptime">
+
+
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:mi>τ</m:mi><m:mo>=</m:mo><m:mfrac>
+    <m:mi>N</m:mi>
+    <m:mrow>
+     <m:msub>
+      <m:mi>f</m:mi>
+      <m:mi>S</m:mi>
+     </m:msub>
+    </m:mrow>
+   </m:mfrac>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaeqiXdqNaeyypa0ZaaSaaaeaacaWGobaabaGaamOzamaaBaaaleaacaWGtbaabeaaaaaaaa@3AD8@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ -->
+
+</equation>
+
+<para id="par21">
+		Reverb time indicates the amount of time required for the reverberant signal's intensity to drop by 60 dB (dB = decibels), effectively to silence. 
+		Recall from the 
+		<link target-id="video-combfilter-theory"/> video that the comb filter's impulse response looks like a series of decaying impulses spaced by a delay 
+		of N samples; this impulse response is plotted in <link target-id="fig-impulseresponse"/> with the independent axis measured in time rather than
+		samples.
+</para>
+
+<figure id="fig-impulseresponse">
+<media id="idm8260464" alt=""><image src="../../media/snd_reverb-impulseresponse.png" mime-type="image/png"/></media>
+<caption>
+   Comb filter impulse response
+</caption>
+</figure>
+
+<para id="par23">
+		Take a few minutes to derive an equation for the comb filter feedback gain "g" as a function of the loop time and the reverb time. The following
+		pair of exercises guide you through the derivation.
+</para>
+
+<exercise id="exer24">
+<problem id="idm1961936">
+<para id="par25">Given the comb filter impulse response pictured in <link target-id="fig-impulseresponse"/>, derive an
+			equation for the reverb time
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:msub>
+    <m:mi>T</m:mi>
+    <m:mrow>
+     <m:mn>60</m:mn>
+    </m:mrow>
+   </m:msub>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamivamaaBaaaleaacaaI2aGaaGimaaqabaaaaa@37BB@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ --> in terms of the loop time
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mi>τ</m:mi>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaeqiXdqhaaa@3701@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ --> and the comb filter's feedback constant g. Hint: Recall the basic equation to express the ratio of two amplitudes in decibels, i.e., use the form with a factor of 20.
+	</para>
+</problem>
+<solution id="idm1531552">
+<para id="par26">
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:msub>
+    <m:mi>T</m:mi>
+    <m:mrow>
+     <m:mn>60</m:mn>
+    </m:mrow>
+   </m:msub>
+   <m:mo>=</m:mo><m:mfrac>
+    <m:mrow>
+     <m:mo>−</m:mo><m:mn>3</m:mn><m:mi>τ</m:mi>
+    </m:mrow>
+    <m:mrow>
+     <m:msub>
+      <m:mrow>
+       <m:mi>log</m:mi><m:mo>⁡</m:mo>
+      </m:mrow>
+      <m:mrow>
+       <m:mn>10</m:mn>
+      </m:mrow>
+     </m:msub>
+     <m:mi>g</m:mi>
+    </m:mrow>
+   </m:mfrac>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamivamaaBaaaleaacaaI2aGaaGimaaqabaGccqGH9aqpdaWcaaqaaiabgkHiTiaaiodacqaHepaDaeaaciGGSbGaai4BaiaacEgadaWgaaWcbaGaaGymaiaaicdaaeqaaOGaam4zaaaaaaa@41B0@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ -->
+	</para>
+</solution>
+</exercise>
+<exercise id="exer27">
+<problem id="idm9129472">
+<para id="par28">Based on your previous derivation, develop an equation for the comb filter gain "g" in terms of the desired loop time
+	and reverb time.</para>
+</problem>
+<solution id="idp2374432">
+<para id="par29">
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:mi>g</m:mi><m:mo>=</m:mo><m:msup>
+    <m:mrow>
+     <m:mn>10</m:mn>
+    </m:mrow>
+    <m:mrow>
+     <m:mo>−</m:mo><m:mfrac>
+      <m:mrow>
+       <m:mn>3</m:mn><m:mi>τ</m:mi>
+      </m:mrow>
+      <m:mrow>
+       <m:msub>
+        <m:mi>T</m:mi>
+        <m:mrow>
+         <m:mn>60</m:mn>
+        </m:mrow>
+       </m:msub>
+      </m:mrow>
+     </m:mfrac>
+    </m:mrow>
+   </m:msup>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaam4zaiabg2da9iaaigdacaaIWaWaaWbaaSqabeaacqGHsisldaWcaaqaaiaaiodacqaHepaDaeaacaWGubWaaSbaaWqaaiaaiAdacaaIWaaabeaaaaaaaaaa@3ECE@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ -->
+</para>
+</solution>
+</exercise>
+<exercise id="exer30">
+<problem id="idm9221728">
+<para id="par31">To finish up, derive the equation for the comb filter delay "N" in terms of the desired loop time.</para>
+</problem>
+<solution id="idp479840">
+<para id="par32">
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:mi>N</m:mi><m:mo>=</m:mo><m:mi>τ</m:mi><m:msub>
+    <m:mi>f</m:mi>
+    <m:mi>S</m:mi>
+   </m:msub>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamOtaiabg2da9iabes8a0jaadAgadaWgaaWcbaGaam4uaaqabaaaaa@3AC8@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ -->
+</para>
+</solution>
+</exercise>
+<para id="par33">
+		Now, return to your own comb filter VI and modify the front-panel controls and LabVIEW MathScript node to use loop time and reverb time as the primary user inputs.
+		Experiment with your modified system to ensure that the spacing between impulses does indeed match the specified loop time, and that the impulse decay rate makes
+		sense for the specified reverb time.
+</para>
+
+</section>
+
+<section id="sec34">
+<title>Comb Filter Implementation for Audio Signals</title>
+
+<para id="par35">
+		In this section, learn how to build a comb filter in LabVIEW that can process an audio signal,
+		specifically, an impulse source. Follow along with the <link target-id="video-combfilter-audio"/> screencast video
+		to create your own VI. The video includes an
+		audio demonstration of the finished result. As a bonus, the video also explains where
+	       the "comb filter" gets its name.
+</para>
+
+<figure id="video-combfilter-audio"><title><link url="https://youtu.be/yjVQeVL6mpo" window="new">https://youtu.be/yjVQeVL6mpo</link> (11:32)</title><media id="eip-idm1466266400" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/yjVQeVL6mpo?rel=0" autoplay="false" width="640" height="460"/>
+ </media>
+
+<caption>[video] Building a LabVIEW VI of a comb filter that can process an audio signal
+</caption></figure><para id="par37">
+		Next, learn how you can replace the impulse source with an audio .wav file. Speech makes a good test signal, and
+		the <link target-id="video-combfilter-wav"/> screencast video shows how to modify your
+		VI to use a .wav audio file as the signal source. The speech clip used as an example in the video is available
+		here: <link resource="speech.wav">speech.wav</link> (audio courtesy of the Open Speech Repository,
+		<link url="http://www.voiptroubleshooter.com/open_speech">www.voiptroubleshooter.com/open_speech</link>; the sentences are two of the many phonetically balanced <term>Harvard Sentences</term>, an important standard
+	       for the speech processing community).
+</para>
+
+<figure id="video-combfilter-wav"><title><link url="https://youtu.be/3ZZQjYF1kpk" window="new">https://youtu.be/3ZZQjYF1kpk</link> (0:00)</title><media id="eip-idm644740352" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/3ZZQjYF1kpk?rel=0" autoplay="false" width="640" height="460"/>
+ </media><caption>[video] Modifying the LabVIEW VI of a comb filter to process a .wav audio signal
+</caption></figure></section>
+
+<section id="sec39">
+<title>References</title>
+
+<list id="list40" list-type="bulleted">
+
+<item> Moore, F.R., "Elements of Computer Music," Prentice-Hall, 1990, ISBN 0-13-252552-6. </item>
+<item> Dodge, C., and T.A. Jerse, "Computer Music: Synthesis, Composition, and Performance," 2nd ed., Schirmer Books, 1997,
+			ISBN 0-02-864682-7. </item>
+
+</list>
+
+</section>
+
+</content>
+</document>

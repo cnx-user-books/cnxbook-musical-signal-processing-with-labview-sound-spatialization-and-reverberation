@@ -1,0 +1,191 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML">
+  <title>Localization Cues</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m15475</md:content-id>
+  <md:title>Localization Cues</md:title>
+  <md:abstract>Learn about two localization cues called interaural intensity difference (IID) and interaural timing difference (ITD), and learn how to create a LabVIEW implementation that places a virtual sound source in a stereo sound field.</md:abstract>
+  <md:uuid>79c777e5-e69b-42f4-a558-e3d35fe56006</md:uuid>
+</metadata>
+
+<content>
+
+<table id="labview_banner" frame="none" summary=""><tgroup cols="2">
+<colspec rowsep="0" colsep="0"/> <colspec colwidth="6in" rowsep="0" colsep="0"/>
+<tbody>
+  <row>
+    <entry morerows="3"><media id="idm2137440" alt=""><image src="../../media/LabVIEWq.png" mime-type="image/png"/></media></entry>
+    <entry> This module refers to LabVIEW, a software development environment that features a graphical programming language.
+       Please see the <link document="m15428">LabVIEW QuickStart Guide</link> module for tutorials and documentation that will help you:</entry>
+  </row>
+  <row> <entry>• Apply LabVIEW to Audio Signal Processing </entry> </row>
+  <row> <entry>• Get started with LabVIEW</entry> </row>
+  <row> <entry>• Obtain a fully-functional evaluation edition of LabVIEW</entry> </row>
+</tbody>
+</tgroup>
+</table>
+
+
+<section id="sec1">
+<title>Introduction</title>
+
+<para id="par2">
+		Our enjoyment of synthesized or recorded sound is greatly enhanced when we perceive the actual locations of
+		the various musicians on stage. In a high quality stereo recording of a jazz trio, for example, you can tell that
+		the drummer is perhaps located slightly to the left of center, the saxophonist is on stage right and the bass player
+		is on stage left. If you have ever flipped on the "mono" (monaural) switch on your stereo amplifier, then you know
+		that the resulting sound is comparatively unpleasant, especially when wearing headphones. </para>
+
+<para id="par3">		We live in a three-dimensional soundfield, and our ears continually experience slightly different versions of 
+		any given sound. These variations allow us to place (or <term>localize</term>) the sound source, even when
+		we cannot see it.</para>
+
+<para id="par4">		In this module, learn about two <term>localization cues</term> called <term>interaural intensity difference</term> 
+		and <term>interaural timing difference</term>, abbreviated <term>IID</term> and <term>ITD</term>, respectively.
+		Each cue relies on presenting a slightly different version of a sound to each ear.
+</para>
+
+</section>
+
+<section id="sec5">
+<title>Interaural Intensity Difference (IID)</title>
+
+<para id="par6">
+		The interaural intensity difference (IID) localization cue relies on the fact that an off-center source produces
+		a higher intensity sound in one ear compared to the other. This technique is also called <term>intensity panning</term>,
+		and is most effective when the listener is wearing headphones. When a multi-speaker arrangement is used in a room,
+		a given sound propagates to both ears. Lower frequencies have longer acoustic wavelengths and are therefore less
+		directional than higher frequency sounds. Consequently, the IID effect works better at higher frequencies above
+		1400 Hz (Dodge and Jerse, 1997).</para>
+
+<para id="par7">		The <link target-id="video-iid"/> screencast video continues the discussion by deriving the equations
+		needed to implement the IID effect using a two-speaker arrangement.
+</para>
+
+<figure id="video-iid"><title><link url="https://youtu.be/TOidBG7mi-w" window="new">https://youtu.be/TOidBG7mi-w</link> (7:48)</title><media id="eip-idm635084624" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/TOidBG7mi-w?rel=0" autoplay="false" width="640" height="460"/>
+ </media>
+<caption>[video] Development of the equations needed to implement the <term>interaural intensity difference</term> (IID) localization cue
+</caption></figure></section>
+
+<section id="sec9">
+<title>Interaural Timing Difference (IID)</title>
+
+<para id="par10">
+		The interaural timing difference (ITD) localization cue relies on the fact that sound waves from an off-center source 
+		arrives at one ear slightly after the other ear. We can perceive this slight difference in time down to about 20 microseconds
+		(Dodge and Jerse, 1997), and this difference helps us to place the sound source either to the left or right. The ITD
+		cue works best in the lower frequency range of 270 to 500 Hz (Dodge and Jerse, 1997).</para>
+
+<para id="par11">		The <link target-id="video-itd"/> screencast video continues the discussion by deriving the equation
+		needed to implement the ITD effect using a two-speaker arrangement.
+</para>
+
+<figure id="video-itd"><title><link url="https://youtu.be/t0P2uQP2U0k" window="new">https://youtu.be/t0P2uQP2U0k</link> (2:34)</title><media id="eip-idm228349328" display="block" alt="Insert alt text here">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/t0P2uQP2U0k?rel=0" autoplay="false" width="640" height="460"/>
+ </media><caption>[video] Development of the equation needed to implement the <term>interaural timing difference</term> (ITD) localization cue
+</caption></figure></section>
+
+<section id="sec13">
+<title>Project: Implement the IID and ITD Localization Cues in LabVIEW</title>
+
+<para id="par14">
+		You can easily experiment with both the IID and ITD localization cues in LabVIEW. The cues are probably easier to perceive when
+		you choose a speech signal for your source. </para>
+
+<para id="par15">		The ITD cue requires a delay or time shift between the two stereo channels. The delay line can be constructed as a digital filter with the
+		transfer function shown in <link target-id="eqn-delayline"/>:
+</para>
+
+<equation id="eqn-delay">
+
+
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:mi>H</m:mi><m:mo stretchy="false">(</m:mo><m:mi>z</m:mi><m:mo stretchy="false">)</m:mo><m:mo>=</m:mo><m:mfrac>
+    <m:mrow>
+     <m:msup>
+      <m:mi>z</m:mi>
+      <m:mrow>
+       <m:mo>−</m:mo><m:mi>N</m:mi>
+      </m:mrow>
+     </m:msup>
+    </m:mrow>
+    <m:mn>1</m:mn>
+   </m:mfrac>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamisaiaacIcacaWG6bGaaiykaiabg2da9maalaaabaGaamOEamaaCaaaleqabaGaeyOeI0IaamOtaaaaaOqaaiaaigdaaaaaaa@3D28@</m:annotation>
+ </m:semantics>
+</m:math>
+<!-- MathType@End@5@5@ -->
+
+</equation>
+
+<para id="par17">
+		Stated as a difference equation, the filter is
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:mi>y</m:mi><m:mo stretchy="false">(</m:mo><m:mi>n</m:mi><m:mo stretchy="false">)</m:mo><m:mo>=</m:mo><m:mi>x</m:mi><m:mo stretchy="false">(</m:mo><m:mi>n</m:mi><m:mo>−</m:mo><m:mi>N</m:mi><m:mo stretchy="false">)</m:mo>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamyEaiaacIcacaWGUbGaaiykaiabg2da9iaadIhacaGGOaGaamOBaiabgkHiTiaad6eacaGGPaaaaa@3E95@</m:annotation>
+ </m:semantics>
+ </m:math>, which states that the output is the same as the input but delayed by N samples. The forward (or "b") coefficients are therefore zero for all but
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:msub>
+    <m:mi>b</m:mi>
+    <m:mi>N</m:mi>
+   </m:msub>
+   <m:mo>=</m:mo><m:mn>1</m:mn>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamOyamaaBaaaleaacaWGobaabeaakiabg2da9iaaigdaaaa@38ED@</m:annotation>
+ </m:semantics>
+ </m:math>, and the reverse (or "a") coefficients are zero for all but
+<!-- MathType@Translator@5@5@MathML2 (m namespace).tdl@MathML 2.0 (m namespace)@ -->
+<m:math>
+ <m:semantics>
+  <m:mrow>
+   <m:msub>
+    <m:mi>a</m:mi>
+    <m:mn>0</m:mn>
+   </m:msub>
+   <m:mo>=</m:mo><m:mn>1</m:mn>
+  </m:mrow>
+ <m:annotation encoding="MathType-MTEF">
+ MathType@MTEF@5@5@+=feaagaart1ev2aqatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYb1uaebbnrfifHhDYfgasaacH8YjY=vipgYlh9vqqj=hEeeu0xXdbba9frFj0=OqFfea0dXdd9vqai=hGuQ8kuc9pgc9q8qqaq=dir=f0=yqaiVgFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamyyamaaBaaaleaacaaIWaaabeaakiabg2da9iaaigdaaaa@38D3@</m:annotation>
+ </m:semantics>
+</m:math>.
+</para>
+
+<para id="par18">
+		<media id="idp3687632" alt=""><image src="../../media/LabVIEW.png" mime-type="image/png"/></media> The <link target-id="video-build"/> screencast video provides LabVIEW coding tips to 
+		implement the equations and to generate a stereo audio signal.
+</para>
+
+<figure id="video-build"><title><link url="https://youtu.be/Ma4aNsfq15s" window="new">https://youtu.be/Ma4aNsfq15s</link> (7:25)</title><media id="eip-idm389677088" alt="Insert alt text here" display="block">
+<video mime-type="video/mpeg" src="https://www.youtube.com/embed/Ma4aNsfq15s?rel=0" height="460" width="640" autoplay="false"/>
+ </media><caption>[video] LabVIEW coding tips for the IID and ITD localization cues
+</caption></figure></section>
+
+<section id="sec20">
+<title>References</title>
+
+<list id="list21" list-type="bulleted">
+
+<item> Dodge, C., and T.A. Jerse, "Computer Music: Synthesis, Composition, and Performance," 2nd ed., Schirmer Books, 1997,
+			ISBN 0-02-864682-7 </item>
+
+</list>
+
+</section>
+
+</content>
+</document>
